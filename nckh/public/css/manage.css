@@ -271,22 +271,21 @@ article .text {
 .main-content {
     position: relative;
     width: 100%;
-    padding: 1rem 7rem;
+    padding: 1rem 1rem 1rem 6rem;
     height: auto;
-    background-color: var(--color-body);
 }
 .header-wrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    background-color: white;
+    background-color: var(--color-second);
     border-radius: 10px;
-    padding: 10px 2rem;
+    padding: 0px 2rem;
     margin-top: 1rem;
 }
 .header-wrapper i {
-    color: #504f7c;
+    color: #fff;
 }
 .user-info {
     display: flex;
@@ -340,8 +339,8 @@ input:focus {
     color: red;
 }
 .card-content {
-    background-color: white;
-    padding: 4rem;
+    background-color: var(--color-body);
+    padding: 2rem;
     border-radius: 10px;
     margin: 90px 0px 170px 0px;
     width: 100%;
@@ -407,7 +406,7 @@ td i {
     color: var(--color-default);
 }
 tr:nth-child(even) {
-    background: #ebebeb;
+    background: #fff;
 }
 .btn-btn {
     background-color: var(--color-default);

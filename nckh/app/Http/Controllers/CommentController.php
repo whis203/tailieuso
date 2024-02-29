@@ -25,8 +25,6 @@ class CommentController extends Controller
         return redirect()->back()->with('success', 'Comment đã được thêm.');
     }
     // CommentController.php
-
-
     public function update(Request $request, $id)
     {
         $request->validate([

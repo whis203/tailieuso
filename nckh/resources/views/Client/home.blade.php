@@ -102,7 +102,7 @@
                     <a class="text-black" href="{{ route('product.detail', ['id' => $product->product_id]) }}">
                         <img src="{{$product->product_img}}" alt="" />
                         <div class="text-book d-flex flex-column justify-content-center align-items-center ">
-                            <h2 class="new__title fs-6 pt-4">{{$product->product_name}}</h2>
+                            <h2 class="new__title fs-6 pt-4 text-center">{{$product->product_name}}</h2>
                             <div class="new__star">
                                 @if(!empty($product->totalstar))
                                 @for ($i = 0; $i < floor($product->totalstar); $i++)

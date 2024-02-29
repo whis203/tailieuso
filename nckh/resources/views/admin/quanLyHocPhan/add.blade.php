@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
-  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="{{ asset('css/manage.css') }}" />
   <script src="https://kit.fontawesome.com/cb6eefb674.js" crossorigin="anonymous"></script>
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
@@ -78,32 +78,77 @@
         </div>
       </div>
       <div class="card-content">
+        @if (Session::has('success'))
+        <div class="alert alert-success fs-6" role="alert">
+          {{ Session::get('success') }}
+        </div>
+        @elseif (Session::has('error'))
+        <div class="alert alert-danger fs-6 " role="alert">
+          {{ Session::get('error') }}
+        </div>
+        @endif
         <h3 class="title">THÊM THÔNG TIN</h3>
-        <form>
+        <form action="{{ route('manageeducation.addEducation') }}" method="post">
+          @csrf
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="inputEmail4">Mã HP</label>
-              <input type="email" class="form-control" id="inputEmail4" placeholder="Nhập mã HP" />
+              <input type="text" name="mahp" class="form-control" id="inputEmail4" placeholder="Nhập mã HP" />
             </div>
             <div class="form-group col-md-6">
               <label for="inputPassword4">Tên HP</label>
-              <input type="password" class="form-control" id="inputPassword4" placeholder="Nhập tên học phần" />
+              <input type="text" name="tenhp" class="form-control" id="inputPassword4" placeholder="Nhập tên học phần" />
             </div>
           </div>
           <div class="form-group">
-            <label for="inputAddress">Giảng viên dạy</label>
-            <select id="inputState" class="form-control">
-              <option selected>Nhập giáo viên</option>
-              <option>Phạm Văn A</option>
-              <option>Phạm Văn B</option>
+            <label for="inputAddress">Đơn vị</label>
+            <select name="donvi" id="inputState" class="form-control">
+              <option selected>Chọn đơn vị</option>
+              <option value="Khoa Luận Chính Trị">Khoa Luận Chính Trị</option>
+              <option value="Khoa Toán và Khoa học Tự nhiên">Khoa Toán và Khoa học Tự nhiên</option>
+              <option value="Khoa Công Nghệ Thông Tin">Khoa Công Nghệ Thông Tin</option>
+              <option value="Khoa Tâm lý - Giáo dục học">Khoa Tâm lý - Giáo dục học</option>
+              <option value="Khoa Ngữ văn và Khoa học xã hội">Khoa Ngữ văn và Khoa học xã hội</option>
+              <option value="Khoa Ngoại ngữ">Khoa Ngoại ngữ</option>
             </select>
           </div>
-          <div class="form-group">
-            <label for="inputAddress2">Số điện thoại</label>
-            <input type="text" class="form-control" id="inputAddress2" placeholder="Nhập số điện thoại" />
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="inputEmail4">Tên viết tắt</label>
+              <input type="text" name="tenvt" class="form-control" id="inputEmail4" placeholder="Nhập tên viết tắt" />
+            </div>
+            <div class="form-group col-md-6">
+              <label for="inputPassword4">Mã In</label>
+              <input type="text" name="main" class="form-control" id="inputPassword4" placeholder="Nhập mã in" />
+            </div>
           </div>
-          <br />
-          <a href="add.html"><button class="btn-btn">SAVE</button></a>
+          <div class="form-group ">
+            <label for="inputPassword4">Mô tả</label>
+            <textarea type="text" name="mota" class="form-control" id="inputPassword4" rows="5" placeholder="Nhập mô tả"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="inputAddress">Số tín chỉ</label>
+            <select name="sotinchi" id="inputState" class="form-control">
+              <option selected>Chọn số tín chỉ</option>
+              <option value="2.0">2.0</option>
+              <option value="3.0">3.0</option>
+              <option value="4.0">4.0</option>
+            </select>
+          </div>
+          <div class="form-group ">
+            <label for="inputPassword4">Mục tiêu</label>
+            <textarea type="text" name="muctieu" class="form-control" id="inputPassword4" rows="5" placeholder="Nhập mục tiêu"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="inputAddress">Khung đào tạo</label>
+            <select name="khoa_id" id="inputState" class="form-control">
+              <option selected>Chọn khung đào tạo</option>
+              @foreach($khoa as $k)
+              <option value="{{$k->id}}">{{$k->tenkhoa}}</option>
+              @endforeach
+            </select>
+          </div>
+          <button type="submit" class="btn-btn">SAVE</button>
         </form>
       </div>
     </div>

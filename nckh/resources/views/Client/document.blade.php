@@ -20,7 +20,7 @@
                     <a class="text-black" href="{{ route('product.detail', ['id' => $product->product_id]) }}">
                         <img src="{{$product->product_img}}" alt="" />
                         <div class="text-book d-flex flex-column justify-content-center align-items-center ">
-                            <h2 class="new__title fs-6 pt-2">{{$product->product_name}}</h2>
+                            <h2 class="new__title fs-6 pt-2 text-center">{{$product->product_name}}</h2>
                             <div class="new__star">
                                 @if(!empty($product->totalstar))
                                 @for ($i = 0; $i < floor($product->totalstar); $i++)
@@ -108,8 +108,8 @@
                                     <span class=" fs-5 fw-bold ">{{$product->product_name}}</span>
                                     <p style="height: 75px;" class="p-0 m-0 overflow-hidden fs-6 col-lg-12 col-md-10 col-sm-8 col-12 ">{{$product->product_detail}} <span>...</span></p>
 
-                                    <div class="icon-book d-flex justify-content-between ">
-                                        <div class="new__star">
+                                    <div class="icon-book d-flex justify-content-between row">
+                                        <div class="new__star  ">
                                             @if(!empty($product->totalstar))
                                             @for ($i = 0; $i < floor($product->totalstar); $i++)
                                                 <i class="fa-solid fa-star"></i>
@@ -123,10 +123,11 @@
                                                 <SPAN>0.0</SPAN>
                                                 @endif
                                         </div>
+                                        <div class="download-book col-lg-3 col-md-5 col-sm-8 col-12 ">
+                                            <a href="{{$product->product_file}}" download="{{$product->product_name}}.pdf" style="padding: 10px;border-radius: 3px;font-size: 16px;border: none;background: #f8e559;color: #fff;"><i class="fa-solid fa-download"></i> Tải xuống</a>
+                                        </div>
                                 </a>
-                                <div class="download-book col-lg-3 col-md-5 col-sm-8 col-12 ">
-                                    <a href="{{$product->product_file}}" download="{{$product->product_name}}.pdf" style="padding: 10px;border-radius: 3px;font-size: 16px;border: none;background: #f8e559;color: #fff;"><i class="fa-solid fa-download"></i> Tải xuống</a>
-                                </div>
+
                             </div>
                             <div class="date-book">
                                 <span style="font-size: 15px;color: #a3a3a3;margin-right: 20px;"><i class="fa-regular fa-calendar"></i> {{$product->created_at}}

@@ -87,11 +87,19 @@
         </div>
       </div>
       <div class="card-content">
+        @if (Session::has('success'))
+        <div class="alert alert-success fs-6" role="alert">
+          {{ Session::get('success') }}
+        </div>
+        @elseif (Session::has('error'))
+        <div class="alert alert-danger fs-6 " role="alert">
+          {{ Session::get('error') }}
+        </div>
+        @endif
         <h3 class="title">DANH SÁCH</h3>
         <div class="table-container">
           <table>
             <thead>
-
               <tr>
                 <th scope="col">Mã HP</th>
                 <th scope="col">Tên HP</th>
@@ -115,11 +123,11 @@
                 <td>{{$edu->mota}}</td>
                 <td><strong>{{$edu->sotinchi}}</strong></td>
                 <td>{{$edu->muctieu}}</td>
-                <td><a href="edit.html"><i class="fa-solid fa-pen-to-square"></i></a>
-                  <i type="button" data-toggle="modal" data-target="#exampleModal" class="fa-solid fa-trash"></i>
-
-                  <!-- Modal -->
-                  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <td><a href="{{route('manageeducation.showFormEdit', $edu->id)}}"><i class="fa-solid fa-pen-to-square"></i></a>
+                  <button type="button" style="border: none;background: none;" data-toggle="modal" data-target="#exampleModal{{$edu->id}}">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                  <div class="modal fade" id="exampleModal{{$edu->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -133,7 +141,7 @@
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                          <button type="button" class="btn btn-danger">Vâng</button>
+                          <a href="{{route('manageeducation.delete', $edu->id)}}" class="btn btn-danger">Vâng</a>
                         </div>
                       </div>
                     </div>
@@ -143,7 +151,13 @@
               @endforeach
             </tbody>
           </table>
+          <a href="{{route('manageeducation.showFormAdd')}}"><button class="btn-btn">ADD</button></a>
         </div>
+        <nav aria-label="Page navigation example ">
+          <ul class="pagination justify-content-end ">
+            {{ $education->links() }}
+          </ul>
+        </nav>
       </div>
     </div>
     <script src="{{ asset('js/QuanLy.js') }}"></script>

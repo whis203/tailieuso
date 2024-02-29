@@ -71,50 +71,136 @@
         <div class="header-logo">
           <i class="fa-solid fa-bars"></i>
         </div>
-        <div class="user-info">
-          <div class="search--">
-            <input type="text" placeholder="Tìm kiếm..." />
-            <i class="fa-solid fa-magnifying-glass"></i>
+        <style>
+          .select select {
+            outline: none;
+            border: none;
+            color: #838383;
+            background-color: #f0f6fd;
+            font-size: 15px;
+            text-align: center;
+            margin-right: 15px;
+            width: 150px;
+            height: 35px;
+            color: #333;
+            cursor: pointer;
+            border-radius: 30px;
+            padding: 5px;
+          }
+
+          .inner-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f6fd;
+            padding: 5px;
+            gap: 1rem;
+            font-size: 18px;
+            width: 450px;
+            height: 35px;
+            border-radius: 30px;
+            position: relative;
+          }
+
+          .inner-form input {
+            outline: none;
+            border: none;
+            color: #838383;
+            width: 400px;
+            padding: 3px 3px 3px 20px;
+            background-color: #f0f6fd;
+            font-size: 15px;
+            border-radius: 30px;
+          }
+
+          .btn-search {
+            border: none;
+            background-color: #28666e;
+            color: white;
+            border-radius: 0px 30px 30px 0px;
+            padding: 4px 17px;
+            position: absolute;
+            right: 0;
+            top: 0;
+          }
+        </style>
+        <form action="{{ route('document.search') }}" method="GET" class="d-flex justify-content-center align-items-center  ">
+          <div class="d-flex my-3 p-0">
+            <div class="select">
+              <select name="category">
+                <div class="bg-black">
+                  <option value="">Tất cả</option>
+                  <option value="Tài liệu">Tài liệu</option>
+                  <option value="Bài tập">Bài tập</option>
+                  <option value="Giáo trình">Giáo trình</option>
+                </div>
+              </select>
+            </div>
+            <div class="select">
+              <select name="created_at">
+                <option value="">Thời gian</option>
+                <option value="1">1 ngày trước</option>
+                <option value="7">1 tuần trước</option>
+                <option value="30">1 tháng trước</option>
+              </select>
+            </div>
           </div>
-          <i class="fa-solid fa-bell"></i>
-          <i class="fa-solid fa-user" style="
-                border: 1px solid #504f7c;
-                padding: 10px;
-                border-radius: 50%;
-                background-color: #504f7c;
-                color: white;
-              "></i>
-        </div>
+          <div class="inner-form pe-4 d-flex justify-content-center align-items-center ">
+            <div class="input-field second-wrap">
+              @if (Session::has('error'))
+              <input class="col-12" id="search" name="product_name" type="text" placeholder="{{ Session::get('error') }}" class="red-placeholder" />
+              @else
+              <input class="col-12" id="search" name="product_name" type="text" placeholder="Tìm kiếm..." />
+              @endif
+            </div>
+            <div class="input-field third-wrap">
+              <button class="btn-search" type="submit">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
+
       <div class="card-content">
-        <h3 class="title">DANH SÁCH</h3>
+        @if (Session::has('success'))
+        <div class="alert alert-success fs-6" role="alert">
+          {{ Session::get('success') }}
+        </div>
+        @elseif (Session::has('error'))
+        <div class="alert alert-danger fs-6 " role="alert">
+          {{ Session::get('error') }}
+        </div>
+        @endif
+        <h3 class="title">DANH SÁCH</h3> <br>
+        <a href="{{ route('managecomment.recent') }}" class=" p-2 btn-btn text-white">Đánh giá gần đây</a>
         <div class="table-container">
           <table>
             <thead>
               <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Tên người dùng</th>
-                <th scope="col">ID tài liệu</th>
-                <th scope="col">Thời gian</th>
-                <th scope="col">Đánh giá</th>
-                <th scope="col">Chi tiết</th>
-                <th scope="col">Thao tác</th>
+                <th scope="col-1">ID</th>
+                <th scope="col-1">ID người dùng</th>
+                <th scope="col-1">ID tài liệu</th>
+                <th scope="col-2">Thời gian</th>
+                <th scope="col-2">Đánh giá</th>
+                <th scope="col-4">Chi tiết</th>
+                <th scope="col-1">Thao tác</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>1</td>
-                <td>Phạm Văn A</td>
-                <td>1</td>
-                <td>12-12-2023</td>
-                <td style="color: yellow;">★★★★★</td>
-                <td>Sách hay lắm nhé...</td>
+                @foreach($comments as $comment)
+                <td>{{$comment->id}}</td>
+                <td>{{$comment->user_id}}</td>
+                <td>{{$comment->product_id}}</td>
+                <td>{{$comment->created_at}}</td>
+                <td>{{$comment->rating}} <i class="fa-solid fa-star text-danger "></i></td>
+                <td>{{$comment->content}}</td>
                 <td>
-
-                  <i type="button" data-toggle="modal" data-target="#exampleModal" class="fa-solid fa-trash"></i>
-
-                  <!-- Modal -->
-                  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <button type="button" style="border: none;background: none;" data-toggle="modal" data-target="#exampleModal{{$comment->id}}">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                  <div class="modal fade" id="exampleModal{{$comment->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -128,72 +214,17 @@
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                          <button type="button" class="btn btn-danger">Vâng</button>
+                          <a href="{{route('managecomment.delete', $comment->id)}}" class="btn btn-danger">Vâng</a>
                         </div>
                       </div>
                     </div>
                   </div>
                 </td>
-
               </tr>
-              <tr>
-                <td>1</td>
-                <td>Phạm Văn A</td>
-                <td>1</td>
-                <td>12-12-2023</td>
-                <td style="color: yellow;">★★★★★</td>
-                <td>Sách hay lắm nhé...</td>
-                <td>
-                  <i class="fa-solid fa-trash"></i>
-                </td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Phạm Văn A</td>
-                <td>1</td>
-                <td>12-12-2023</td>
-                <td style="color: yellow;">★★★★★</td>
-                <td>Sách hay lắm nhé...</td>
-                <td>
-                  <i class="fa-solid fa-trash"></i>
-                </td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Phạm Văn A</td>
-                <td>1</td>
-                <td>12-12-2023</td>
-                <td style="color: yellow;">★★★★★</td>
-                <td>Sách hay lắm nhé...</td>
-                <td>
-                  <i class="fa-solid fa-trash"></i>
-                </td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Phạm Văn A</td>
-                <td>1</td>
-                <td>12-12-2023</td>
-                <td style="color: yellow;">★★★★★</td>
-                <td>Sách hay lắm nhé...</td>
-                <td>
-                  <i class="fa-solid fa-trash"></i>
-                </td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Phạm Văn A</td>
-                <td>1</td>
-                <td>12-12-2023</td>
-                <td style="color: yellow;">★★★★★</td>
-                <td>Sách hay lắm nhé...</td>
-                <td>
-                  <i class="fa-solid fa-trash"></i>
-                </td>
-              </tr>
+              @endforeach
             </tbody>
           </table>
-          <a href="add.html"><button class="btn-btn">Đánh giá gần đây</button></a>
+
         </div>
       </div>
     </div>

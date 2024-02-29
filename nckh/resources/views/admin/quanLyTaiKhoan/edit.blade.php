@@ -87,7 +87,7 @@
           {{ Session::get('error') }}
         </div>
         @endif
-        <h3 class="title">THÊM THÔNG TIN</h3>
+        <h3 class="title">SỬA THÔNG TIN</h3>
         <form action="{{ route('manageaccount.updateInfo', $user->id) }}" method="post" enctype="multipart/form-data">
           @csrf
           <div class="form-row">

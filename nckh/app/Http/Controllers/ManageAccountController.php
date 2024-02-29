@@ -15,9 +15,14 @@ class ManageAccountController extends Controller
         if (auth()->check() && auth()->user()->role === 'user' && auth()->user()->role === 'teacher') {
             return redirect()->route('signin.index');
         }
-        $loggedInUsers = Cache::get('logged_in_users', 0);
-        $users = User::all();
-        return view('admin.quanLyTaikhoan.list', compact('users', 'loggedInUsers'));
+        if (Auth::check()) {
+            $loggedInUsers = Cache::get('logged_in_users', 0);
+            $users = User::all();
+            return view('admin.quanLyTaikhoan.list', compact('users', 'loggedInUsers'));
+        } else {
+            // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
+            return redirect()->route('signin.index');
+        }
     }
     public function showFormAdd()
     {

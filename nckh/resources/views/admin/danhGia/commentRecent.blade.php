@@ -86,78 +86,67 @@
               "></i>
         </div>
       </div>
-      <div class="narbar-bottom">
-        <div class="card-content">
-          @if (Session::has('success'))
-          <div class="alert alert-success fs-6" role="alert">
-            {{ Session::get('success') }}
-          </div>
-          @elseif (Session::has('error'))
-          <div class="alert alert-danger fs-6 " role="alert">
-            {{ Session::get('error') }}
-          </div>
-          @endif
-          <h3 class="title">DANH SÁCH</h3>
-          <div class="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th scope="col">Tên người dùng</th>
-                  <th scope="col">Số điện thoại</th>
-                  <th scope="col">Email</th>
-                  <th scope="col">Giới tính</th>
-                  <th scope="col">Avatar</th>
-                  <th scope="col">Tài khoản</th>
-                  <th scope="col">Mật khẩu</th>
-                  <th scope="col">Thao tác</th>
-                </tr>
-              </thead>
-              <tbody>
-                @foreach ($users as $user)
-                <tr>
-                  <td>{{$user->name}}</td>
-                  <td>{{$user->phone}}</td>
-                  <td>{{$user->email}}</td>
-                  <td>
-                    @if($user->gender == 0)
-                    Nam
-                    @elseif($user->gender == 1)
-                    Nữ
-                    @endif
-                  </td>
-                  <td><img style="width: 100px;height: auto;" src="{{$user->img}}" alt=""></td>
-                  <td>{{$user->username}}</td>
-                  <td>{{$user->password}}</td>
-                  <td><a href="{{route('manageaccount.showFormEdit', $user->id)}}"><i class="fa-solid fa-pen-to-square"></i></a>
-                    <button type="button" style="border: none;background: none;" data-toggle="modal" data-target="#exampleModal{{$user->id}}">
-                      <i class="fa-solid fa-trash"></i>
-                    </button>
-                    <div class="modal fade" id="exampleModal{{$user->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                      <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            Bạn có chắc chắn xoá?
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                            <a href="{{route('manageaccount.delete', $user-> id)}}" class="btn btn-danger">Vâng</a>
-                          </div>
+      <div class="card-content">
+        @if (Session::has('success'))
+        <div class="alert alert-success fs-6" role="alert">
+          {{ Session::get('success') }}
+        </div>
+        @elseif (Session::has('error'))
+        <div class="alert alert-danger fs-6 " role="alert">
+          {{ Session::get('error') }}
+        </div>
+        @endif
+        <h3 class="title">DANH SÁCH</h3>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">ID người dùng</th>
+                <th scope="col">ID tài liệu</th>
+                <th scope="col">Thời gian</th>
+                <th scope="col">Đánh giá</th>
+                <th scope="col">Chi tiết</th>
+                <th scope="col">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                @foreach($comments as $comment)
+                <td>{{$comment->id}}</td>
+                <td>{{$comment->user_id}}</td>
+                <td>{{$comment->product_id}}</td>
+                <td>{{$comment->created_at}}</td>
+                <td>{{$comment->rating}} <i class="fa-solid fa-star text-danger "></i></td>
+                <td>{{$comment->content}}</td>
+                <td>
+                  <button type="button" style="border: none;background: none;" data-toggle="modal" data-target="#exampleModal{{$comment->id}}">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                  <div class="modal fade" id="exampleModal{{$comment->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          Bạn có chắc chắn xoá?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                          <a href="{{route('managecomment.delete', $comment->id)}}" class="btn btn-danger">Vâng</a>
                         </div>
                       </div>
                     </div>
-                  </td>
-                </tr>
-                @endforeach
-              </tbody>
-            </table>
-            <a href="{{route('manageaccount.showFormAdd')}}"><button class="btn-btn">ADD</button></a>
-          </div>
-
+                  </div>
+                </td>
+              </tr>
+              @endforeach
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

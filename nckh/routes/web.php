@@ -100,4 +100,12 @@ Route::get('/admin/account/edit/{id}', [ManageAccountController::class, 'showFor
 Route::post('/admin/account/update/{id}', [ManageAccountController::class, 'updateInfo'])->name('manageaccount.updateInfo');
 
 Route::get('/admin/education', [ManageEducationController::class, 'index'])->name('manageeducation.index');
+Route::get('/admin/education/add', [ManageEducationController::class, 'showFormAdd'])->name('manageeducation.showFormAdd');
+Route::post('/admin/education/create', [ManageEducationController::class, 'addEducation'])->name('manageeducation.addEducation');
+Route::get('/admin/education/edit/{id}', [ManageEducationController::class, 'showFormEdit'])->name('manageeducation.showFormEdit');
+Route::post('/admin/education/update/{id}', [ManageEducationController::class, 'updateEdu'])->name('manageeducation.updateEdu');
+Route::get('/admin/education/delete/{id}', [ManageEducationController::class, 'deleteEduId'])->name('manageeducation.delete');
+
 Route::get('/admin/comment', [ManageCommentController::class, 'index'])->name('managecomment.index');
+Route::get('/admin/comment/recent', [ManageCommentController::class, 'recent'])->name('managecomment.recent');
+Route::get('/admin/comment/delete/{id}', [ManageCommentController::class, 'deleteCommentId'])->name('managecomment.delete');
