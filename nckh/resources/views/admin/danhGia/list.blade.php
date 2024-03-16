@@ -2,7 +2,8 @@
 <html lang="en">
 
 <head>
-  <title>@yield('title')</title>
+<link rel="shortcut icon" type="x-icon" href="./img/book.png"></link>
+<title>Quản Lý Đánh Giá</title>
   <!-- Link Styles -->
   <link rel="stylesheet" href="{{ asset('css/manage.css') }}" />
   <script src="https://kit.fontawesome.com/cb6eefb674.js" crossorigin="anonymous"></script>
@@ -59,7 +60,7 @@
         </a>
       </li>
       <li class="profile">
-        <form action="logout.php"><button type="submit" href="index.html" id="log_out" style="border: none;">
+        <form action="{{route('logout')}}"><button type="submit" href="index.html" id="log_out" style="border: none;">
             <i class="bx bx-log-out" id="log_out"></i>
           </button></form>
       </li>
@@ -180,6 +181,7 @@
               <tr>
                 <th scope="col-1">ID</th>
                 <th scope="col-1">ID người dùng</th>
+                <th scope="col-1">Tên người dùng</th>
                 <th scope="col-1">ID tài liệu</th>
                 <th scope="col-2">Thời gian</th>
                 <th scope="col-2">Đánh giá</th>
@@ -192,6 +194,7 @@
                 @foreach($comments as $comment)
                 <td>{{$comment->id}}</td>
                 <td>{{$comment->user_id}}</td>
+                <td>{{$comment->userName}}</td>
                 <td>{{$comment->product_id}}</td>
                 <td>{{$comment->created_at}}</td>
                 <td>{{$comment->rating}} <i class="fa-solid fa-star text-danger "></i></td>

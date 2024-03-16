@@ -21,6 +21,8 @@ class Products extends Model
         'product_img',
         'product_file',
         'user_id',
+        'mahp',
+        'tacgia',
         'totalstar',
         'category',
         'views',

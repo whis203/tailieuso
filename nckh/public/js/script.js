@@ -16,8 +16,8 @@ ScrollReveal({
 ScrollReveal().reveal(".container-title", { origin: "top" });
 ScrollReveal().reveal(".container-img", { origin: "bottom" });
 ScrollReveal().reveal(".h4-title", { origin: "top" });
-// ScrollReveal().reveal(".article-three", { origin: "right" });
-// ScrollReveal().reveal(".article-one", { origin: "left" });
+ScrollReveal().reveal(".border-one", { origin: "top" });
+ScrollReveal().reveal(".border-two", { origin: "top", delay: 400 });
 
 window.addEventListener("load", () => {
     const loader = document.querySelector(".container-loader");

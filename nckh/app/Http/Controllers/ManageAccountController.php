@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
-
+use Illuminate\Support\Str;
+use Illuminate\Pagination\Paginator;
 class ManageAccountController extends Controller
 {
     public function index()
@@ -18,7 +19,10 @@ class ManageAccountController extends Controller
         if (Auth::check()) {
             $loggedInUsers = Cache::get('logged_in_users', 0);
             $users = User::all();
-            return view('admin.quanLyTaikhoan.list', compact('users', 'loggedInUsers'));
+            foreach ($users as $user) {
+                $user->password = Str::limit($user->password, 20);
+            }
+            return view('admin.quanLyTaikhoan.list', compact('users'));
         } else {
             // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
             return redirect()->route('signin.index');
@@ -114,5 +118,27 @@ class ManageAccountController extends Controller
         $user->delete();
         $data['success'] = 'Xoá sản người dùng thành công';
         return redirect()->back()->with($data);
+    }
+    public function search(Request $request)
+    {
+        Paginator::useBootstrap();
+        $keyword = $request->input('username');
+        $query = User::query();
+        if ($keyword) {
+            $query->where(function ($q) use ($keyword) {
+                $q->where('username', 'like', '%' . $keyword . '%')
+                  ->orWhere('name', 'like', '%' . $keyword . '%');
+            });
+        }
+    
+        $users = User::all();
+        $users = $query->paginate(10);
+        foreach ($users as $user) {
+            $user->password = Str::limit($user->password, 20);
+        }
+        if ($users->isEmpty()) {
+            return redirect()->back()->with(['error' => 'Không có tài khoản nào!']);
+        }
+        return view('admin.quanLyTaiKhoan.list', compact('users'));
     }
 }

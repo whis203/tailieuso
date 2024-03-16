@@ -8,11 +8,11 @@ use Illuminate\Http\Request;
 use App\Models\Products;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Favorite;
-use App\Models\User;
+use App\Models\Education;
 use App\Models\Comment;
 use App\Models\CommentReply;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Str;
 class ProductsController extends Controller
 {
     // Import Storage facade
@@ -38,7 +38,9 @@ class ProductsController extends Controller
             empty($request->product_detail) ||
             empty($imageFileName) ||
             empty($pdfFileName) ||
-            empty($request->category)
+            empty($request->category) ||
+            empty($request->tacgia) ||
+            empty($request->mahp)
         ) {
             $data['error'] = 'Vui lòng nhập đủ thông tin';
             return redirect()->back()->with($data);
@@ -51,12 +53,28 @@ class ProductsController extends Controller
         $product->product_img = '/img/' . $imageFileName;
         $product->product_file = '/storage/pdf/' . $pdfFileName; // Set the PDF file path
         $product->category = $request->category;
+        $product->mahp = $request->mahp;
+        $product->tacgia = $request->tacgia;
         $product->save();
         // Redirect back to the product list page with a success message
         return redirect()->back()->with(['success' => 'Đăng ký sản phẩm thành công']);
     }
     public function showProduct($product_id)
     {
+        $education = Education::all();
+        $user_id = Auth::id();
+        // Lấy danh sách các sản phẩm yêu thích của người dùng
+        $favorites = Favorite::where('user_id', $user_id)->paginate(3);
+            // Lặp qua danh sách sản phẩm yêu thích và tính điểm đánh giá trung bình của mỗi sản phẩm
+            foreach ($favorites as $favorite) {
+                // Lấy sản phẩm liên quan đến mỗi mục yêu thích
+                $product = $favorite->product;
+                $product->product_name = Str::limit($product->product_name, 20);
+                // Tính toán điểm đánh giá trung bình của sản phẩm
+                $totalstar = $product->comments()->avg('rating');
+                // Gán giá trị điểm đánh giá trung bình vào thuộc tính 'totalstar' của sản phẩm
+                $product->totalstar = $totalstar;
+            }
         $comments = Comment::where('product_id', $product_id)->get();
         // Lấy thông tin của sản phẩm từ cơ sở dữ liệu
         $product = Products::where('product_id', $product_id)->first();
@@ -74,7 +92,7 @@ class ProductsController extends Controller
             $product->views += 1;
             $product->save();
         }
-        return view('client.detail', compact('comments', 'product', 'averageRating'));
+        return view('client.detail', compact('comments', 'product', 'averageRating','education','favorites'));
     }
     public function download($id)
     {
@@ -87,36 +105,39 @@ class ProductsController extends Controller
         }
     }
     public function addFavorite($product_id)
-    {
-        // Đảm bảo người dùng đã đăng nhập
-        if (Auth::check()) {
-            $user_id = Auth::id();
-            // Kiểm tra xem sản phẩm đã được thêm vào danh sách yêu thích của người dùng chưa
-            $existingFavorite = Favorite::where('user_id', $user_id)->where('product_id', $product_id)->first();
+{
+    // Ensure user is logged in
+    if (Auth::check()) {
+        $user_id = Auth::id();
+        // Check if the product is already in favorites
+        $existingFavorite = Favorite::where('user_id', $user_id)->where('product_id', $product_id)->first();
 
-            if ($existingFavorite) {
-
-                $data['error'] = 'Sản phẩm đã tồn tại';
-                return back()->with($data);
-            } else {
-                Favorite::create([
-                    'user_id' => $user_id,
-                    'product_id' => $product_id,
-                    'quantity' => 1
-                ]);
-            }
-            // Đếm số lượng yêu thích và lưu vào session
-
-            $favoriteCount = Favorite::where('user_id', $user_id)->sum('quantity');
-            session()->put('favoriteCount', $favoriteCount);
-            $data['success'] = 'Thêm sản phẩm vào danh sách yêu thích thành công';
-            return redirect()->route('favorite.index')->with($data);
+        if ($existingFavorite) {
+            return response()->json(['error' => 'Sản phẩm đã tồn tại'], 400);
         } else {
-            // Xử lý trường hợp người dùng chưa đăng nhập
-            $data['error'] = 'Vui lòng đăng nhập để thêm sản phẩm vào danh sách yêu thích';
-            return redirect()->route('signin.index')->with($data);
+            $newFavorite = Favorite::create([
+                'user_id' => $user_id,
+                'product_id' => $product_id,
+                'quantity' => 1
+            ]);
+            // Lấy thông tin sản phẩm và gán cho $existingFavorite
+            
+            $existingFavorite = $newFavorite->load('product');
         }
+
+        // Count favorites and store in session
+        $favoriteCount = Favorite::where('user_id', $user_id)->sum('quantity');
+        session()->put('existingFavorite', $existingFavorite);
+        session()->put('favoriteCount', $favoriteCount);
+        return response()->json(['favoriteCount' => $favoriteCount, 'existingFavorite' => $existingFavorite, 'success' => 'Thêm sản phẩm vào danh sách yêu thích thành công']);
+    } else {
+        // Handle case where user is not logged in
+        return response()->json(['error' => 'Vui lòng đăng nhập để thêm sản phẩm vào danh sách yêu thích'], 401);
     }
+}
+
+
+    
     public function removeFavorite($favorite_id)
     {
         // Tìm sản phẩm yêu thích cần xóa
@@ -148,18 +169,24 @@ class ProductsController extends Controller
     {
         $user = Auth::id();
         $products = Products::where('user_id', $user)->get();
+        $education = Education::all();
+        $products->transform(function ($product) {
+            $product->product_name = Str::limit($product->product_name, 20);
+            return $product;
+        });
         if ($products->isEmpty()) {
-            return view('client.product', compact('products'));
+            return view('client.product', compact('products','education'));
         } else {
             // Nếu có sản phẩm, bạn có thể truy cập và truyền dữ liệu vào view.
-            return view('client.product', compact('products'));
+            return view('client.product', compact('products','education'));
         }
     }
     public function editProductId($id)
     {
         // Tìm sản phẩm cần sửa dựa trên id
         $product = Products::find($id);
-        return view('client.product', compact('product'));
+        $education = education::all();
+        return view('client.product', compact('product','education'));
     }
     public function updateProductId(Request $request, $id)
     {
@@ -177,15 +204,17 @@ class ProductsController extends Controller
             $request->file('product_img')->move(public_path('img'), $fileName);
             $product->product_img = '/img/' . $fileName;
         }
-        if ($request->hasFile('product_file')) {
-            $pdfFileName = time() . '_' . $request->file('product_file')->getClientOriginalName();
-            $request->file('product_file')->storeAs('public/pdf', $pdfFileName);
-            $product->product_file = '/storage/pdf/' . $pdfFileName;
-        }
+            if ($request->hasFile('product_file')) {
+                $pdfFileName = time() . '_' . $request->file('product_file')->getClientOriginalName();
+                $request->file('product_file')->storeAs('public/pdf', $pdfFileName);
+                $product->product_file = '/storage/pdf/' . $pdfFileName;
+            }
         // Cập nhật các trường dữ liệu thông tin sản phẩm
         $product->product_name = $request->input('product_name');
         $product->product_detail = $request->input('product_detail');
         $product->category = $request->input('category');
+        $product->mahp = $request->input('mahp');
+        $product->tacgia = $request->input('tacgia');
         // Lưu thông tin sản phẩm
         $product->save();
         // Redirect về trang chỉnh sửa sản phẩm và kèm theo thông báo thành công

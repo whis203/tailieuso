@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Comment;
-
+use Illuminate\Support\Str;
+use App\Models\User;
 class ManageCommentController extends Controller
 {
     public function index()
@@ -15,6 +16,15 @@ class ManageCommentController extends Controller
         }
         if (Auth::check()) {
             $comments = Comment::all();
+            foreach ($comments as $comment) {
+                $comment->content = Str::limit($comment->content, 30);
+                // Lấy thông tin user của mỗi comment và gán vào thuộc tính của comment
+                $user = User::find($comment->user_id);
+                if ($user) {
+                    $comment->userName = $user->name; // Tên của người dùng
+                    $comment->userImg = $user->img; // Email của người dùng
+                }
+            }
             return view('admin.danhGia.list', compact('comments'));
         } else {
             // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập

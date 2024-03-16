@@ -22,6 +22,12 @@ class ResetPasswordController extends Controller
             'email' => 'required|email',
             'password' => 'required|confirmed|min:5',
         ]);
+        $request->validate([
+            'g-recaptcha-response' => 'required|captcha', 
+        ], [
+            'g-recaptcha-response.required' => 'Vui lòng xác nhận bạn không phải người máy.',
+            'g-recaptcha-response.captcha' => 'Captcha không đúng!',
+        ]);
 
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),

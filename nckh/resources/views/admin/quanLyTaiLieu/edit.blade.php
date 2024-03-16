@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
+  <link rel="shortcut icon" type="x-icon" href="./img/book.png"></link>
+  <title>Quản Lý Tài Liệu</title>
   <link rel="stylesheet" href="{{ asset('css/manage.css') }}" />
   <script src="https://kit.fontawesome.com/cb6eefb674.js" crossorigin="anonymous"></script>
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
@@ -50,7 +51,7 @@
         </a>
       </li>
       <li class="profile">
-        <form action="logout.php"><button type="submit" href="index.html" id="log_out" style="border: none;">
+        <form action="{{route('logout')}}"><button type="submit" href="index.html" id="log_out" style="border: none;">
             <i class="bx bx-log-out" id="log_out"></i>
           </button></form>
       </li>
@@ -58,25 +59,11 @@
   </div>
   <div class="content">
     <div class="main-content" style="padding-bottom: 113px">
-      <div class="header-wrapper">
-        <div class="header-logo">
-          <i class="fa-solid fa-bars"></i>
-        </div>
-        <div class="user-info">
-          <div class="search--">
-            <input type="text" placeholder="Tìm kiếm..." />
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </div>
-          <i class="fa-solid fa-bell"></i>
-          <i class="fa-solid fa-user" style="
-                border: 1px solid #504f7c;
-                padding: 10px;
-                border-radius: 50%;
-                background-color: #504f7c;
-                color: white;
-              "></i>
-        </div>
-      </div>
+    <div class="header-wrapper py-3">
+                <div class="header-logo">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </div>
       <div class="card-content">
         @if (Session::has('success'))
         <div class="alert alert-success fs-6" role="alert">
@@ -97,7 +84,7 @@
           </div>
           <div class="form-group">
             <label for="inputAddress2">Giới thiệu</label>
-            <input type="text" name="product_detail" class="form-control" id="inputAddress2" value="{{$product->product_detail}}" />
+            <textarea type="text" name="product_detail" class="form-control" id="inputAddress2" rows="4">{{$product->product_detail}}</textarea>
           </div>
           <div class="form-group ">
             <label for="inputAddress2">Ảnh</label> <br>
@@ -111,6 +98,11 @@
             <p>{{$product->product_file}}</p>
             <input type="file" class="form-control" name="product_file" id="inputAddress2" placeholder="Nhập file PDF" />
           </div>
+          <div class="form-group ">
+                        <label for="inputPassword4">Tên tác giả</label>
+                        <input type="text" name="tacgia" class="form-control" id="inputPassword4"
+                            value="{{ $product->tacgia }}" />
+                    </div>
           <div class=" form-group">
             <label for="inputAddress">Thể loại</label>
             <select name="category" id="inputState" class="form-control">
@@ -119,6 +111,15 @@
               <option value="Bài tập">Bài tập</option>
             </select>
           </div>
+          <div class="form-group">
+                        <label for="inputAddress">Mã học phần</label>
+                        <select id="mahp_select" name="mahp" id="inputState" class="form-control">
+                            <option selected>{{ $product->mahp }}</option>
+                            @foreach ($education as $edu)
+                            <option value="{{$edu->mahp}}" data-tenhp="{{$edu->tenhp}}">{{$edu->mahp}}</option>
+                            @endforeach
+                        </select>
+                    </div>
           <br />
           <button type="submit" class="btn-btn">Cập nhật</button>
         </form>

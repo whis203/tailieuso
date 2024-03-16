@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-
+use App\Models\Education;
+use App\Models\Favorite;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Str;
 class InfoController extends Controller
 {
     public function index()
@@ -17,7 +18,21 @@ class InfoController extends Controller
             return redirect()->route('signin.index');
         }
         if (Auth::check()) {
-            return view('client.info');
+            $education = Education::all();
+            $user_id = Auth::id();
+            // Lấy danh sách các sản phẩm yêu thích của người dùng
+            $favorites = Favorite::where('user_id', $user_id)->paginate(3);
+                // Lặp qua danh sách sản phẩm yêu thích và tính điểm đánh giá trung bình của mỗi sản phẩm
+                foreach ($favorites as $favorite) {
+                    // Lấy sản phẩm liên quan đến mỗi mục yêu thích
+                    $product = $favorite->product;
+                    $product->product_name = Str::limit($product->product_name, 20);
+                    // Tính toán điểm đánh giá trung bình của sản phẩm
+                    $totalstar = $product->comments()->avg('rating');
+                    // Gán giá trị điểm đánh giá trung bình vào thuộc tính 'totalstar' của sản phẩm
+                    $product->totalstar = $totalstar;
+                }
+            return view('client.info',compact('education','favorites'));
         } else {
             // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
             return redirect()->route('signin.index');

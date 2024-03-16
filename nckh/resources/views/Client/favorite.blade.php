@@ -115,9 +115,27 @@
                                             <input type="file" name="product_file" id="myFileInput" class="py-3" />
                                         </div>
                                         <div class="form-group  fs-6 ">
-                                            <label for="inputEmail4 ">Thể loại</label>
-                                            <input name="category" type="text" class="form-control" id="inputEmail4" placeholder="Tên tài liệu">
-                                        </div>
+                                                <label for="inputEmail4 ">Tác giả</label>
+                                                <input name="tacgia" type="text" class="form-control" id="inputEmail4"
+                                                    placeholder="Tên tác giả">
+                                            </div>
+                                     
+                                            <div class="form-group  fs-6 ">
+                                                <label for="inputEmail4 ">Thể loại</label>
+                                                <input name="category" type="text" class="form-control" id="inputEmail4"
+                                                    placeholder="Tên tài liệu">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="inputAddress">Mã học phần</label>
+                                                <select id="mahp_select" name="mahp" id="inputState"
+                                                    class="form-control">
+                                                    <option selected>Chọn học phần</option>
+                                                    @foreach ($education as $edu)
+                                                    <option value="{{$edu->mahp}}" data-tenhp="{{$edu->tenhp}}">
+                                                        {{$edu->mahp}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         <div class="modal-footer fs-5">
                                             <button type="submit" name="submit" for="myFileInput" class="file-input-label d-block p-2 text-white text-center pe-auto rounded-4 border-0 w-100 " style="background-color: #AAD9BB;"><i class="fa-solid fa-cloud-arrow-up"></i> Tải lên</button>
                                         </div>
@@ -155,7 +173,7 @@
                                 <a class="text-black" href="{{ route('product.detail', ['id' => $favorite->product->product_id]) }}">
                                     <img src="{{ $favorite->product->product_img }}" alt="" />
                                     <div class="text-book d-flex flex-column justify-content-center align-items-center ">
-                                        <h2 class="new__title pt-2 fs-6">{{ $favorite->product->product_name }}</h2>
+                                        <h2 class="new__title pt-2 fs-6 text-center">{{ $favorite->product->product_name }}</h2>
                                         <div class="new__star d-flex justify-content-center align-items-center ">
                                             @if(!empty($favorite->product->totalstar))
                                             @for ($i = 0; $i < floor($favorite->product->totalstar); $i++)
@@ -172,7 +190,7 @@
                                         </div>
                                 </a>
                                 <div class="deleteProduct ">
-                                    <button type="button" class="btn rounded-circle btn-sm position-absolute top-0 end-0" style="margin: 3px; background-color: #FF6868;color: white;" data-toggle="modal" data-target="#exampleModalz{{$favorite->id}}">
+                                    <button type="button" class="btn rounded-circle btn-sm position-absolute top-0 end-0 bg-danger" style="color: white;" data-toggle="modal" data-target="#exampleModalz{{$favorite->id}}">
                                         <i class="fa-solid fa-times"></i>
                                     </button>
                                 </div>
@@ -193,7 +211,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body fs-6">
                 Bạn có chắc chắn muốn xóa không?
             </div>
             <div class="modal-footer">

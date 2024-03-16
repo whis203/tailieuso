@@ -39,7 +39,17 @@ class SignupController extends Controller
             $data_er['error'] = 'Email đã được sử dụng.';
             return redirect()->route('signup.index')->with($data_er);
         };
-
+        $request->validate([
+            'g-recaptcha-response' => 'required|captcha', 
+            'username' => 'required|string',
+            'password' => 'required|string',
+            'name' => 'required|string',
+            'email' => 'required|email'
+        ], [
+            'g-recaptcha-response.required' => 'Vui lòng xác nhận bạn không phải người máy.',
+            'g-recaptcha-response.captcha' => 'Captcha không đúng!',
+        ]);
+        
         User::create([
             'username' => $request->username,
             'password' => Hash::make($request->password),

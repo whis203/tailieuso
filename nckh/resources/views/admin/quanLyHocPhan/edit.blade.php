@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
+  <link rel="shortcut icon" type="x-icon" href="./img/book.png"></link>
+  <title>Quản Lý Học Phần</title>
   <link rel="stylesheet" href="{{ asset('css/manage.css') }}" />
   <script src="https://kit.fontawesome.com/cb6eefb674.js" crossorigin="anonymous"></script>
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
@@ -50,7 +51,7 @@
         </a>
       </li>
       <li class="profile">
-        <form action="logout.php"><button type="submit" href="index.html" id="log_out" style="border: none;">
+        <form action="{{route('logout')}}"><button type="submit" href="index.html" id="log_out" style="border: none;">
             <i class="bx bx-log-out" id="log_out"></i>
           </button></form>
       </li>
@@ -58,25 +59,11 @@
   </div>
   <div class="content">
     <div class="main-content" style="padding-bottom: 113px">
-      <div class="header-wrapper">
-        <div class="header-logo">
-          <i class="fa-solid fa-bars"></i>
-        </div>
-        <div class="user-info">
-          <div class="search--">
-            <input type="text" placeholder="Tìm kiếm..." />
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </div>
-          <i class="fa-solid fa-bell"></i>
-          <i class="fa-solid fa-user" style="
-                border: 1px solid #504f7c;
-                padding: 10px;
-                border-radius: 50%;
-                background-color: #504f7c;
-                color: white;
-              "></i>
-        </div>
-      </div>
+    <div class="header-wrapper py-3">
+                <div class="header-logo">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </div>
       <div class="card-content">
         @if (Session::has('success'))
         <div class="alert alert-success fs-6" role="alert">
@@ -99,54 +86,6 @@
               <label for="inputPassword4">Tên HP</label>
               <input type="text" name="tenhp" class="form-control" id="inputPassword4" value="{{$education->tenhp}}" />
             </div>
-          </div>
-          <div class="form-group">
-            <label for="inputAddress">Đơn vị</label>
-            <select name="donvi" id="inputState" class="form-control">
-              <option selected value="{{$education->donvi}}">{{$education->donvi}}</option>
-              <option value="Khoa Luận Chính Trị">Khoa Luận Chính Trị</option>
-              <option value="Khoa Toán và Khoa học Tự nhiên">Khoa Toán và Khoa học Tự nhiên</option>
-              <option value="Khoa Công Nghệ Thông Tin">Khoa Công Nghệ Thông Tin</option>
-              <option value="Khoa Tâm lý - Giáo dục học">Khoa Tâm lý - Giáo dục học</option>
-              <option value="Khoa Ngữ văn và Khoa học xã hội">Khoa Ngữ văn và Khoa học xã hội</option>
-              <option value="Khoa Ngoại ngữ">Khoa Ngoại ngữ</option>
-            </select>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="inputEmail4">Tên viết tắt</label>
-              <input type="text" name="tenvt" class="form-control" id="inputEmail4" value="{{$education->tenvt}}" />
-            </div>
-            <div class="form-group col-md-6">
-              <label for="inputPassword4">Mã In</label>
-              <input type="text" name="main" class="form-control" id="inputPassword4" value="{{$education->main}}" />
-            </div>
-          </div>
-          <div class="form-group ">
-            <label for="inputPassword4">Mô tả</label>
-            <textarea type="text" name="mota" class="form-control" id="inputPassword4" rows="5">{{$education->mota}}</textarea>
-          </div>
-          <div class="form-group">
-            <label for="inputAddress">Số tín chỉ</label>
-            <select name="sotinchi" id="inputState" class="form-control">
-              <option selected value="{{$education->sotinchi}}">{{$education->sotinchi}}</option>
-              <option value="2.0">2.0</option>
-              <option value="3.0">3.0</option>
-              <option value="4.0">4.0</option>
-            </select>
-          </div>
-          <div class="form-group ">
-            <label for="inputPassword4">Mục tiêu</label>
-            <textarea type="text" name="muctieu" class="form-control" id="inputPassword4" rows="5">{{$education->muctieu}}</textarea>
-          </div>
-          <div class="form-group">
-            <label for="inputAddress">Khung đào tạo</label>
-            <select name="khoa_id" id="inputState" class="form-control">
-              <option selected>Chọn khung đào tạo</option>
-              @foreach($khoa as $k)
-              <option value="{{$k->id}}" {{ $education->khoa_id == $k->id ? 'selected' : '' }}>{{$k->tenkhoa}}</option>
-              @endforeach
-            </select>
           </div>
           <button type="submit" class="btn-btn">SAVE</button>
         </form>

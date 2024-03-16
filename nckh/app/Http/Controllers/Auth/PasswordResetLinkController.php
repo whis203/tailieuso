@@ -35,9 +35,8 @@ class PasswordResetLinkController extends Controller
         $status = Password::sendResetLink(
             $request->only('email')
         );
-
         return $status == Password::RESET_LINK_SENT
-                    ? back()->with('status', __($status))
+                    ? back()->with('success', 'Liên kết đặt lại mật khẩu đã được gửi thành công!')
                     : back()->withInput($request->only('email'))
                             ->withErrors(['email' => __($status)]);
     }

@@ -27,6 +27,12 @@ class SigninController extends Controller
             if ($user->role === 'admin') {
                 return redirect()->route('admin.index');
             }
+            $request->validate([
+                'g-recaptcha-response' => 'required|captcha', 
+            ], [
+                'g-recaptcha-response.required' => 'Vui lòng xác nhận bạn không phải người máy.',
+                'g-recaptcha-response.captcha' => 'Captcha không đúng!',
+            ]);
             $userData = [
                 'username' => $user->username,
                 'name' => $user->name,

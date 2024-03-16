@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-
+    <link rel="shortcut icon" type="x-icon" href="./img/book.png"></link>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Đăng nhập</title>
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
@@ -17,16 +17,20 @@
     <script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js">
     </script>
     <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.indigo-pink.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
     <header class="header">
-        <p class="fs-1 ">Tài liệu <span>thư viện số</span>
+        <p class="fs-1 ">Tài liệu <span>số</span>
         </p>
     </header>
     <div class="container-fluid mx-auto ">
         <form method="POST" action="{{ route('password.update') }}" class="mx-auto">
-            <p class="ps-1">Đổi mật khẩu mới</p>
+            <p class="">ĐỔI MẬT KHẨU MỚI</p>
             @if (Session::has('success'))
             <div class="alert alert-success" role="alert">
                 {{ Session::get('success') }}
@@ -49,6 +53,15 @@
 
                 <input class="w-100" type="password" id="password_confirmation" name="password_confirmation" placeholder="Nhập lại mật khẩu mới" required>
             </div>
+            @if ($errors->has('g-recaptcha-response'))
+            <span class="help-block">
+                <span class="text-danger">{{ $errors->first('g-recaptcha-response') }}</span>
+            </span>
+            @endif
+            <div class="">
+                {!! NoCaptcha::renderJs() !!}
+                {!! NoCaptcha::display() !!}
+            </div>
             <a href=""> <button type="submit" class="btn--">Đặt lại mật khẩu</button></a>
         </form>
 
@@ -62,7 +75,8 @@
                     <div class="col-md-3 col-lg-4 col-xl-3 mb-4">
 
                         <h6 class="text-uppercase fw-bold">Trường Đại Học</h6>
-                        <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px" />
+                        <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                            style="width: 60px; background-color: #7c4dff; height: 2px" />
                         <p>
                             KHOA CÔNG NGHỆ THÔNG TIN <br />
                             TRƯỜNG ĐH HẢI PHÒNG
@@ -72,41 +86,43 @@
                     <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
 
                         <h6 class="text-uppercase fw-bold">Sản phẩm</h6>
-                        <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px;" />
+                        <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                            style="width: 60px; background-color: #7c4dff; height: 2px;" />
                         <p>
-                            <a href="#!" style="color: #717cb6;">Website</a>
-                        </p>
-                        <p>
-                            <a href="#!" style="color: #717cb6;">Tài liệu</a>
+                            <a href="#!" style="color: #717cb6;">Website Tài Liệu Công Nghệ Thông Tin</a>
                         </p>
                     </div>
 
                     <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
 
                         <h6 class="text-uppercase fw-bold">Thành Viên</h6>
-                        <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px" />
+                        <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                            style="width: 60px; background-color: #7c4dff; height: 2px" />
                         <p>
-                            <a href="#!" style="color: #717cb6;">Phạm Văn A</a>
+                            <a href="#!" style="color: #717cb6;">Phạm Tiến Huy</a>
                         </p>
                         <p>
-                            <a href="#!" style="color: #717cb6;">Phạm Văn B</a>
+                            <a href="#!" style="color: #717cb6;">Đặng Thị Minh Ngọc</a>
                         </p>
                         <p>
-                            <Phạm href="#!" style="color: #717cb6;">Phạm Văn C</a>
+                            <Phạm href="#!" style="color: #717cb6;">Tăng Phương Thảo</a>
                         </p>
                         <p>
-                            <a href="#!" style="color: #717cb6;">Phạm Văn D</a>
+                            <a href="#!" style="color: #717cb6;">Nguyễn Đình Sơn</a>
+                        </p>
+                        <p>
+                            <a href="#!" style="color: #717cb6;">Phạm Đức Việt</a>
                         </p>
                     </div>
 
                     <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
 
                         <h6 class="text-uppercase fw-bold">Liên Hệ</h6>
-                        <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px" />
-                        <p><i class="fas fa-home mr-3"></i> Hải Phòng</p>
-                        <p><i class="fas fa-envelope mr-3"></i> info@example.com</p>
-                        <p><i class="fas fa-phone mr-3"></i> 098765432</p>
-                        <p><i class="fas fa-print mr-3"></i> 098765432</p>
+                        <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                            style="width: 60px; background-color: #7c4dff; height: 2px" />
+                        <p><i class="fas fa-home mr-3"></i>Đại Học Hải Phòng</p>
+                        <p><i class="fas fa-envelope mr-3"></i>xyz@gmail.com</p>
+                        <p><i class="fas fa-phone mr-3"></i>0869282369</p>
                     </div>
 
                 </div>
@@ -114,7 +130,7 @@
             </div>
         </section>
 
-        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+        <div class="text-center p-3" style="background-color: #717cb6">
             <a class="text-white" href="https://mdbootstrap.com/">Nhóm Dự Án Nghiên Cứu Khoa Học</a>
         </div>
 

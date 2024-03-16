@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
+  <link rel="shortcut icon" type="x-icon" href="./img/book.png"></link>
+  <title>Quản Lý Tài Khoản</title>
   <link rel="stylesheet" href="{{ asset('css/manage.css') }}" />
   <script src="https://kit.fontawesome.com/cb6eefb674.js" crossorigin="anonymous"></script>
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
@@ -50,7 +51,7 @@
         </a>
       </li>
       <li class="profile">
-        <form action="logout.php"><button type="submit" href="index.html" id="log_out" style="border: none;">
+        <form action="{{route('logout')}}"><button type="submit" href="index.html" id="log_out" style="border: none;">
             <i class="bx bx-log-out" id="log_out"></i>
           </button></form>
       </li>
@@ -58,25 +59,11 @@
   </div>
   <div class="content">
     <div class="main-content" style="padding-bottom: 113px">
-      <div class="header-wrapper">
-        <div class="header-logo">
-          <i class="fa-solid fa-bars"></i>
-        </div>
-        <div class="user-info">
-          <div class="search--">
-            <input type="text" placeholder="Tìm kiếm..." />
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </div>
-          <i class="fa-solid fa-bell"></i>
-          <i class="fa-solid fa-user" style="
-                border: 1px solid #504f7c;
-                padding: 10px;
-                border-radius: 50%;
-                background-color: #504f7c;
-                color: white;
-              "></i>
-        </div>
-      </div>
+    <div class="header-wrapper py-3">
+                <div class="header-logo">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </div>
       <div class="card-content">
         @if (Session::has('success'))
         <div class="alert alert-success fs-6" role="alert">

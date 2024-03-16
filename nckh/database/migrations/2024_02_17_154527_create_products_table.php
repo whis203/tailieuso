@@ -18,6 +18,11 @@ return new class extends Migration
             $table->string('product_img', 300)->nullable();
             $table->string('product_file', 255)->nullable();
             $table->string('totalstar', 255)->nullable();
+            $table->integer('user_id')->nullable();
+            $table->integer('education_id')->nullable();;
+            $table->string('tacgia', 50)->nullable();;
+            $table->string('category', 100)->nullable();
+            $table->integer('views')->nullable();
             $table->timestamps();
         });
     }

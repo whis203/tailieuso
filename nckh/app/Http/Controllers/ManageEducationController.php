@@ -23,7 +23,7 @@ class ManageEducationController extends Controller
             foreach ($education as $edu) {
                 $edu->mota = Str::limit($edu->mota, 50);
                 $edu->muctieu = Str::limit($edu->muctieu, 50); // Giới hạn độ dài thành 50 ký tự
-            }
+            }   
             return view('admin.quanLyHocPhan.list', compact('education'));
         } else {
             // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
@@ -69,29 +69,23 @@ class ManageEducationController extends Controller
     }
     public function showFormAdd()
     {
-        $khoa = Khoa::all();
-        return view('admin.quanLyHocPhan.add', compact('khoa'));
+       
+        return view('admin.quanLyHocPhan.add');
     }
 
     public function showFormEdit($id)
     {
-        $khoa = Khoa::all();
+       
         $education = Education::find($id);
-        return view('admin.quanLyHocPhan.edit', compact('education', 'khoa'));
+        return view('admin.quanLyHocPhan.edit',compact('education'));
     }
     public function updateEdu(Request $request, $id)
     {
         $education = Education::find($id);
-        if ($request->filled(['mahp', 'tenhp', 'donvi', 'tenvt', 'main', 'mota', 'sotinchi', 'muctieu', 'khoa_id'])) {
+        if ($request->filled(['mahp', 'tenhp'])) {
             $education->update([
                 'mahp' => $request->input('mahp'),
                 'tenhp' => $request->input('tenhp'),
-                'donvi' => $request->input('donvi'),
-                'main' => $request->input('main'),
-                'mota' => $request->input('mota'),
-                'sotinchi' => $request->input('sotinchi'),
-                'muctieu' => $request->input('muctieu'),
-                'khoa_id' => $request->input('khoa_id'),
             ]);
         }
         $education->save();
@@ -104,5 +98,28 @@ class ManageEducationController extends Controller
         $education->delete();
         $data['success'] = 'Xoá sản người dùng thành công';
         return redirect()->back()->with($data);
+    }
+    public function search(Request $request)
+    {
+        Paginator::useBootstrap();
+        $mahp = $request->input('mahp');
+      
+        $query = Education::query();
+        if ($mahp) {
+            $query->where(function ($q) use ($mahp) {
+                $q->where('mahp', 'like', '%' . $mahp . '%')
+                  ->orWhere('tenhp', 'like', '%' . $mahp . '%');
+            });
+        }
+        $education = Education::all();
+        $education = $query->paginate(10);
+        foreach ($education as $edu) {
+            $edu->mota = Str::limit($edu->mota, 50);
+            $edu->muctieu = Str::limit($edu->muctieu, 50); // Giới hạn độ dài thành 50 ký tự
+        }
+        if ($education->isEmpty()) {
+            return redirect()->back()->with(['error' => 'Không có sản phẩm nào!']);
+        }
+        return view('admin.quanLyHocPhan.list', compact('education'));
     }
 }

@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700,800");
 @import url("https://fonts.googleapis.com/css?family=Lobster");
 body {
-    background: #9aa7e9b2;
+    background: #9aa7e996;
 }
 .header {
     width: 100%;
@@ -22,8 +22,11 @@ body {
 }
 .container-fluid p {
     text-align: center;
-    font-family: "Lobster", cursive;
-    font-size: 30px;
+    font-family: "Nunito", sans-serif;
+    font-optical-sizing: auto;
+    line-height: 1.5;
+    font-size: 25px;
+    font-weight: 800;
     margin: 0;
     display: block;
     color: #717cb6;
@@ -44,21 +47,25 @@ form {
     margin: 50px;
     border-radius: 5px;
     height: auto;
+    font-family: "Nunito", sans-serif;
+    
 }
 form .form-group input {
     border: none;
-    background: rgba(241, 241, 241, 0.8);
+    background: rgba(255, 255, 255, 0.8);
     padding: 20px 10px;
-    margin-top: 30px;
+    margin-bottom: 20px;
+    border: 1px solid rgb(224, 224, 224);
 }
 form img {
     display: block;
     margin: 0 auto; /* This will center the image horizontally */ /* Adjust this value as needed */
-    width: 120px;
+    width: 100px;
     background: #717db6a2;
     border-radius: 50%;
     filter: brightness(1.1);
-    margin-top: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 form .btn-- {
     background: #717cb6;

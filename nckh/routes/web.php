@@ -64,12 +64,13 @@ Route::post('/product/reply', [ProductsController::class, 'storeReply'])->name('
 // yêu thích
 
 Route::get('/favorite', [FavoriteController::class, 'viewFavorites'])->name('favorite.index');
-Route::get('/addFavorite/{id}', [ProductsController::class, 'addFavorite'])->name('product.addFavorite');
+Route::get('/product/addFavorite/{id}', [ProductsController::class, 'addFavorite'])->name('product.addFavorite');
+
 Route::get('/favorite/{id}', [ProductsController::class, 'removeFavorite'])->name('product.deleteFavorite');
-Route::get('/education/{id}', [HomeController::class, 'select'])->name('education.select');
-Route::get('/education', [KhoaController::class, 'index'])->name('education.index');
-Route::get('/education/{id}', [KhoaController::class, 'select'])->name('education.select');
-Route::get('/education/detail/{id}', [EducationController::class, 'eduDetail'])->name('education.eduDetail');
+Route::get('/education/{mahp}', [EducationController::class, 'select'])->name('education.select');
+Route::get('/education', [EducationController::class, 'index'])->name('education.index');
+
+
 // bình luận
 Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 Route::get('/products/{product}/comments', [CommentController::class, 'index'])->name('comments.index');
@@ -90,7 +91,7 @@ Route::get('/admin', [ManageController::class, 'index'])->name('admin.index');
 Route::get('/admin/document', [ManageDocument::class, 'index'])->name('managedocument.index');
 Route::get('/admin/document/add', [ManageDocument::class, 'showFormAdd'])->name('managedocument.showFormAdd');
 Route::get('/admin/document/edit/{id}', [ManageDocument::class, 'showFormEdit'])->name('managedocument.showFormEdit');
-
+Route::get('/admin/document/search', [ManageDocument::class, 'search'])->name('managedocument.search');
 
 Route::get('/admin/account', [ManageAccountController::class, 'index'])->name('manageaccount.index');
 Route::get('/admin/account/add', [ManageAccountController::class, 'showFormAdd'])->name('manageaccount.showFormAdd');
@@ -98,6 +99,7 @@ Route::post('/admin/account/create', [ManageAccountController::class, 'create'])
 Route::get('/admin/account/delete/{id}', [ManageAccountController::class, 'deleteUserId'])->name('manageaccount.delete');
 Route::get('/admin/account/edit/{id}', [ManageAccountController::class, 'showFormEdit'])->name('manageaccount.showFormEdit');
 Route::post('/admin/account/update/{id}', [ManageAccountController::class, 'updateInfo'])->name('manageaccount.updateInfo');
+Route::get('/admin/account/search', [ManageAccountController::class, 'search'])->name('manageaccount.search');
 
 Route::get('/admin/education', [ManageEducationController::class, 'index'])->name('manageeducation.index');
 Route::get('/admin/education/add', [ManageEducationController::class, 'showFormAdd'])->name('manageeducation.showFormAdd');
@@ -105,6 +107,7 @@ Route::post('/admin/education/create', [ManageEducationController::class, 'addEd
 Route::get('/admin/education/edit/{id}', [ManageEducationController::class, 'showFormEdit'])->name('manageeducation.showFormEdit');
 Route::post('/admin/education/update/{id}', [ManageEducationController::class, 'updateEdu'])->name('manageeducation.updateEdu');
 Route::get('/admin/education/delete/{id}', [ManageEducationController::class, 'deleteEduId'])->name('manageeducation.delete');
+Route::get('/admin/education/search', [ManageEducationController::class, 'search'])->name('manageeducation.search');
 
 Route::get('/admin/comment', [ManageCommentController::class, 'index'])->name('managecomment.index');
 Route::get('/admin/comment/recent', [ManageCommentController::class, 'recent'])->name('managecomment.recent');
